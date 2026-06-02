@@ -32,7 +32,9 @@ static void mqtt_event_handler(void *arg, esp_event_base_t base,
 esp_err_t mqtt_manager_init(void)
 {
     esp_mqtt_client_config_t mqtt_cfg = {
-        .broker.address.uri = MQTT_BROKER_URI,
+        .broker.address.hostname = MQTT_BROKER_HOST,
+        .broker.address.port = MQTT_BROKER_PORT,
+        .broker.address.transport = MQTT_TRANSPORT_OVER_TCP,
     };
 
     client = esp_mqtt_client_init(&mqtt_cfg);

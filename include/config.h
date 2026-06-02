@@ -24,14 +24,15 @@
 #define TEMP_THRESHOLD_HIGH     30.0f
 
 // WiFi
-#define WIFI_SSID               "SSID"
-#define WIFI_PASSWORD           "PASSWORD"
+#define WIFI_SSID               "realme 14 5G n4p4"
+#define WIFI_PASSWORD           "AsdAsd123"
 #define WIFI_MAX_RETRY          5
 
 // MQTT
-#define MQTT_BROKER_URI         "mqtt://192.168.1.100"
-#define MQTT_TOPIC_TEMP         "home/sensor/temperature"
-#define MQTT_TOPIC_GAS          "home/sensor/gas"
-#define MQTT_TOPIC_MOTOR        "home/sensor/motor"
-#define MQTT_TOPIC_ALERT        "home/alert"
+#define MQTT_BROKER_HOST        "broker.emqx.io"
+#define MQTT_BROKER_PORT        1883
+#define MQTT_TOPIC_TEMP         "/sensor/temperature"
+#define MQTT_TOPIC_GAS          "/sensor/gas"
+#define MQTT_TOPIC_MOTOR        "/sensor/motor"
+#define MQTT_TOPIC_ALERT        "/alert"
 #define MQTT_PUBLISH_INTERVAL   5000
