@@ -1,7 +1,9 @@
 #include "lps22df.h"
+#include "config.h"
 #include "driver/i2c_master.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 static i2c_master_bus_handle_t bus_handle;
 static i2c_master_dev_handle_t dev_handle;
@@ -30,7 +32,7 @@ static esp_err_t i2c_master_init(void){
     return esp_err; 
 }
 
-static esp_err_t lps22df_read(uint8_t reg_addr, uint8_t *data, size_t len)
+esp_err_t lps22df_read(uint8_t reg_addr, uint8_t *data, size_t len)
 {
     return i2c_master_transmit_receive(dev_handle, &reg_addr, 1, data, len, pdMS_TO_TICKS(I2C_MASTER_TIMEOUT_MS));
 }
@@ -41,27 +43,34 @@ static esp_err_t lps22df_write_byte(uint8_t reg_addr, uint8_t data)
     return i2c_master_transmit(dev_handle, write_buf, sizeof(write_buf), pdMS_TO_TICKS(I2C_MASTER_TIMEOUT_MS));
 }
 
-esp_err_t lps22df_init(void)
-{
+esp_err_t lps22df_init(void){
     uint8_t data[1];
 
     esp_err_t err = i2c_master_init();
     if (err != ESP_OK) {
-        ESP_LOGE("LPS", "I2C init błąd: %s", esp_err_to_name(err));
+        ESP_LOGE("LPS", "I2C init ERROR: %s", esp_err_to_name(err));
         return err;
     }
 
     err = lps22df_read(LPS22DF_WHO_AM_I, data, 1);
     if (err != ESP_OK) {
-        ESP_LOGE("LPS", "WHO_AM_I błąd: %s", esp_err_to_name(err));
+        ESP_LOGE("LPS", "WHO_AM_I ERROR: %s", esp_err_to_name(err));
         return err;
     }
 
     if (data[0] != 0xB4) {
-        ESP_LOGE("LPS", "Zły WHO_AM_I: 0x%02X", data[0]);
+        ESP_LOGE("LPS", "WHO_AM_I ERROR: 0x%02X", data[0]);
         return ESP_ERR_NOT_FOUND;
     }
     ESP_LOGI("LPS", "WHO_AM_I OK: 0x%02X", data[0]);
 
     return lps22df_write_byte(LPS22DF_CTRL_REG1, LPS22DF_CTRL_REG1_VAL);
+}
+
+float lps22df_read_temperature(void)
+{
+    uint8_t data[2];
+    if (lps22df_read(LPS22DF_TEMP_OUT_L, data, 2) != ESP_OK) return -999.0f;
+    int16_t raw = (int16_t)((data[1] << 8) | data[0]);
+    return (float)raw / 100.0f;
 }
