@@ -35,4 +35,5 @@
 #define MQTT_TOPIC_GAS          "/sensor/gas"
 #define MQTT_TOPIC_MOTOR        "/sensor/motor"
 #define MQTT_TOPIC_ALERT        "/alert"
+#define MQTT_TOPIC_COMMAND      "/command"
 #define MQTT_PUBLISH_INTERVAL   5000

@@ -3,6 +3,8 @@
 #include "mqtt_client.h"
 #include "esp_log.h"
 #include <stdio.h>
+#include <string.h>
+#include "controller.h"  
 
 static const char *TAG = "MQTT";
 static esp_mqtt_client_handle_t client;
@@ -16,10 +18,17 @@ static void mqtt_event_handler(void *arg, esp_event_base_t base,
         case MQTT_EVENT_CONNECTED:
             ESP_LOGI(TAG, "CONNECTED TO BROKER");
             mqtt_connected = true;
+            esp_mqtt_client_subscribe(client, MQTT_TOPIC_COMMAND, 1);
+            ESP_LOGI(TAG, "SBUBSCRIBED: %s", MQTT_TOPIC_COMMAND);
             break;
         case MQTT_EVENT_DISCONNECTED:
             ESP_LOGW(TAG, "DISCONNECTED");
             mqtt_connected = false;
+            break;
+        case MQTT_EVENT_DATA:
+            ESP_LOGI(TAG, "COMMAND RECEIVED: %.*s",
+                     event->data_len, event->data);
+            handle_command(event->data, event->data_len);
             break;
         case MQTT_EVENT_ERROR:
             ESP_LOGE(TAG, "MQTT ERROR");
