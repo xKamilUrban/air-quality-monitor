@@ -1,0 +1,640 @@
+[
+    {
+        "id": "d6bbecfbf072dc0d",
+        "type": "tab",
+        "label": "IoT Monitor",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "964915cc01507419",
+        "type": "mqtt in",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Temperatura",
+        "topic": "/sensor/temperature",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "broker_main",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 120,
+        "y": 60,
+        "wires": [
+            [
+                "9d67b0817bcc9191"
+            ]
+        ]
+    },
+    {
+        "id": "79e5fe00b76da940",
+        "type": "mqtt in",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Gaz PPM",
+        "topic": "/sensor/gas",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "broker_main",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "5f66698b7566e256"
+            ]
+        ]
+    },
+    {
+        "id": "1edf872db31bdc6e",
+        "type": "mqtt in",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Silnik",
+        "topic": "/sensor/motor",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "broker_main",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 120,
+        "y": 220,
+        "wires": [
+            [
+                "b9eff6e9fa64d1a5"
+            ]
+        ]
+    },
+    {
+        "id": "9d67b0817bcc9191",
+        "type": "function",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Parsuj Temp",
+        "func": "var val = parseFloat(msg.payload);\nif (isNaN(val)) return null;\nflow.set('last_temp', val);\nmsg.payload = val;\nmsg.topic = 'temperature';\nreturn msg;",
+        "outputs": 1,
+        "x": 310,
+        "y": 60,
+        "wires": [
+            [
+                "37ce26c95ab0714e",
+                "50cfa6e44f9ea42a",
+                "433575efdcd4619c",
+                "a1b617479fdb85ce"
+            ]
+        ]
+    },
+    {
+        "id": "5f66698b7566e256",
+        "type": "function",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Parsuj Gaz",
+        "func": "var val = parseFloat(msg.payload);\nif (isNaN(val)) return null;\nflow.set('last_gas', val);\nmsg.payload = val;\nmsg.topic = 'gas';\nreturn msg;",
+        "outputs": 1,
+        "x": 310,
+        "y": 140,
+        "wires": [
+            [
+                "211f56787763f95b",
+                "18e3b2e27ff0c7e0",
+                "433575efdcd4619c",
+                "a1b617479fdb85ce"
+            ]
+        ]
+    },
+    {
+        "id": "b9eff6e9fa64d1a5",
+        "type": "function",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Parsuj Silnik",
+        "func": "var val = parseFloat(msg.payload);\nif (isNaN(val)) return null;\nmsg.payload = val;\nmsg.topic = 'motor';\nreturn msg;",
+        "outputs": 1,
+        "x": 310,
+        "y": 220,
+        "wires": [
+            [
+                "444e18b2aadf2121",
+                "3800b0035af35862"
+            ]
+        ]
+    },
+    {
+        "id": "37ce26c95ab0714e",
+        "type": "ui_chart",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Wykres Temp",
+        "group": "grp_charts",
+        "order": 1,
+        "width": "12",
+        "height": "4",
+        "label": "Temperatura (°C)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Brak danych",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "50",
+        "removeOlder": "10",
+        "removeOlderPoints": "200",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#e74c3c"
+        ],
+        "outputs": 1,
+        "x": 540,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "211f56787763f95b",
+        "type": "ui_chart",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Wykres Gazu",
+        "group": "grp_charts",
+        "order": 2,
+        "width": "12",
+        "height": "4",
+        "label": "Stężenie gazu (PPM)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Brak danych",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "10000",
+        "removeOlder": "10",
+        "removeOlderPoints": "200",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#f39c12"
+        ],
+        "outputs": 1,
+        "x": 540,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "444e18b2aadf2121",
+        "type": "ui_chart",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Wykres Silnika",
+        "group": "grp_charts",
+        "order": 3,
+        "width": "12",
+        "height": "4",
+        "label": "Prędkość silnika (0-255)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Brak danych",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "255",
+        "removeOlder": "10",
+        "removeOlderPoints": "200",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#2ecc71"
+        ],
+        "outputs": 1,
+        "x": 540,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "50cfa6e44f9ea42a",
+        "type": "ui_gauge",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Wskaźnik Temp",
+        "group": "grp_gauges",
+        "order": 1,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Temperatura",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": "0",
+        "max": "50",
+        "colors": [
+            "#2ecc71",
+            "#f39c12",
+            "#e74c3c"
+        ],
+        "seg1": "25",
+        "seg2": "35",
+        "x": 540,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "18e3b2e27ff0c7e0",
+        "type": "ui_gauge",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Wskaźnik Gazu",
+        "group": "grp_gauges",
+        "order": 2,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Stężenie gazu",
+        "label": "PPM",
+        "format": "{{value}}",
+        "min": "0",
+        "max": "10000",
+        "colors": [
+            "#2ecc71",
+            "#f39c12",
+            "#e74c3c"
+        ],
+        "seg1": "1000",
+        "seg2": "3000",
+        "x": 540,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "3800b0035af35862",
+        "type": "ui_gauge",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Wskaźnik Silnika",
+        "group": "grp_gauges",
+        "order": 3,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Silnik",
+        "label": "%",
+        "format": "{{Math.round(value/255*100)}}",
+        "min": "0",
+        "max": "255",
+        "colors": [
+            "#2ecc71",
+            "#3498db",
+            "#9b59b6"
+        ],
+        "seg1": "85",
+        "seg2": "170",
+        "x": 540,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "433575efdcd4619c",
+        "type": "function",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Sterowanie AUTO",
+        "func": "var mode = flow.get('motor_mode') || 'auto';\nif (mode !== 'auto') return null;\n\nvar temp = flow.get('last_temp') || 0;\nvar gas = flow.get('last_gas') || 0;\nvar temp_thr = flow.get('temp_threshold') || 30;\nvar gas_thr = flow.get('gas_threshold') || 3000;\nvar gas_max = 10000;\n\nvar speed_gas = 0;\nvar speed_temp = 0;\n\nif (gas >= gas_max) {\n    speed_gas = 255;\n} else if (gas >= gas_thr) {\n    var ratio = (gas - gas_thr) / (gas_max - gas_thr);\n    speed_gas = Math.round(ratio * 255);\n    speed_gas = Math.max(speed_gas, 50); // Minimum 50, żeby silnik ruszył\n}\n\n\nif (temp >= temp_thr) {\n    speed_temp = 80;\n}\n\n\nvar final_speed = Math.max(speed_gas, speed_temp);\n\nnode.status({\n    fill: final_speed > 0 ? 'green' : 'grey',\n    shape: 'dot',\n    text: 'G:' + speed_gas + ' T:' + speed_temp + ' -> Run:' + final_speed\n});\n\nmsg.payload = JSON.stringify({ command: 'set_speed', value: final_speed });\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 320,
+        "wires": [
+            [
+                "2df032437b46bc18"
+            ]
+        ]
+    },
+    {
+        "id": "a1b617479fdb85ce",
+        "type": "function",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Sprawdź Alerty",
+        "func": "var temp = flow.get('last_temp') ?? 0;\nvar gas = flow.get('last_gas') ?? 0;\n\nvar temp_thr = flow.get('temp_threshold') ?? 30;\nvar gas_thr = flow.get('gas_threshold') ?? 3000;\n\nvar now = Date.now();\nvar lastAlert = flow.get('last_alert_time') || 0;\nvar cooldown = 5 * 60 * 1000;\n\nif (now - lastAlert < cooldown) {\n    node.status({fill:'yellow', shape:'ring', text:'Oczekiwanie na koniec cooldownu'});\n    return null;\n}\n\nvar alerts = [];\n\nif (temp >= temp_thr) {\n    alerts.push('UWAGA! Wysoka temperatura: ' + temp.toFixed(1) + 'C (prog: ' + temp_thr + 'C)');\n}\nif (gas >= gas_thr) {\n    alerts.push('ALARM! Wysokie stezenie gazu: ' + Math.round(gas) + ' PPM (prog: ' + gas_thr + ' PPM)');\n}\n\nif (alerts.length > 0) {\n    flow.set('last_alert_time', now);\n    msg.payload = alerts.join(' | ');\n    msg.topic = 'IoT Alert - ' + new Date().toLocaleString('pl-PL');\n    \n    node.status({fill:'red', shape:'dot', text:'ALERT WYSŁANY!'});\n    return msg;\n}\n\nnode.status({fill:'green', shape:'dot', text:'Parametry w normie'});\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 400,
+        "wires": [
+            [
+                "04718574a4273130",
+                "f6e93abc3b70f6eb"
+            ]
+        ]
+    },
+    {
+        "id": "04718574a4273130",
+        "type": "e-mail",
+        "z": "d6bbecfbf072dc0d",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": false,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "Email Alert",
+        "dname": "Email Alert",
+        "x": 760,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "f6e93abc3b70f6eb",
+        "type": "ui_toast",
+        "z": "d6bbecfbf072dc0d",
+        "position": "top right",
+        "displayTime": "10",
+        "highlight": "#e74c3c",
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "topic": "Alert",
+        "name": "Powiadomienie UI",
+        "x": 770,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "e631915f9591e3c8",
+        "type": "ui_switch",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Tryb AUTO/Manual",
+        "label": "Tryb AUTO (ON=auto, OFF=manual)",
+        "tooltip": "Włączony = tryb automatyczny, Wyłączony = tryb manualny",
+        "group": "grp_control",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "passthru": true,
+        "decouple": false,
+        "topic": "mode_switch",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "3c93af1a53179971"
+            ]
+        ]
+    },
+    {
+        "id": "3c93af1a53179971",
+        "type": "function",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Ustaw tryb",
+        "func": "if (msg.payload === 1) {\n    flow.set('motor_mode', 'auto');\n    node.status({fill:'green', shape:'dot', text:'AUTO'});\n    return null;\n} else {\n    flow.set('motor_mode', 'manual');\n    node.status({fill:'yellow', shape:'dot', text:'MANUAL'});\n    var manual_speed = flow.get('last_manual_speed') || 0;\n    msg.payload = JSON.stringify({command: 'set_speed', value: manual_speed});\n    return msg;\n}",
+        "outputs": 1,
+        "x": 360,
+        "y": 500,
+        "wires": [
+            [
+                "2df032437b46bc18"
+            ]
+        ]
+    },
+    {
+        "id": "6a85bcfe41302dc6",
+        "type": "ui_slider",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Prędkość Manual",
+        "label": "Prędkość silnika (tylko tryb manualny)",
+        "tooltip": "Działa tylko gdy tryb AUTO jest wyłączony",
+        "group": "grp_control",
+        "order": 2,
+        "width": "10",
+        "height": "1",
+        "passthru": false,
+        "outs": "all",
+        "topic": "motor_speed",
+        "min": "0",
+        "max": "255",
+        "step": "1",
+        "x": 130,
+        "y": 560,
+        "wires": [
+            [
+                "cf1ff5c312cb7da1"
+            ]
+        ]
+    },
+    {
+        "id": "cf1ff5c312cb7da1",
+        "type": "function",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Slider Handler",
+        "func": "var mode = flow.get('motor_mode') || 'auto';\nflow.set('last_manual_speed', msg.payload);\nif (mode !== 'manual') {\n    node.status({fill:'red', shape:'ring', text:'Wyłącz tryb AUTO!'});\n    return null;\n}\nnode.status({fill:'green', shape:'dot', text:'speed: ' + msg.payload});\nmsg.payload = JSON.stringify({command: 'set_speed', value: msg.payload});\nreturn msg;",
+        "outputs": 1,
+        "x": 360,
+        "y": 560,
+        "wires": [
+            [
+                "2df032437b46bc18"
+            ]
+        ]
+    },
+    {
+        "id": "2547344621959b61",
+        "type": "ui_numeric",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Próg Temporatury",
+        "label": "Próg temperatury (°C)",
+        "tooltip": "Powyżej tego progu wentylator włączy się na 80/255",
+        "group": "grp_thresholds",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "passthru": true,
+        "topic": "temp_threshold",
+        "format": "{{value}}",
+        "min": "0",
+        "max": "100",
+        "step": 1,
+        "x": 130,
+        "y": 640,
+        "wires": [
+            [
+                "bd35dc04898ea5e6"
+            ]
+        ]
+    },
+    {
+        "id": "bd35dc04898ea5e6",
+        "type": "function",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Zapisz próg temp",
+        "func": "flow.set('temp_threshold', msg.payload);\nnode.status({fill:'blue', shape:'dot', text: msg.payload + 'C'});\nvar mode = flow.get('motor_mode') || 'auto';\nif (mode !== 'auto') return null;\nmsg.payload = JSON.stringify({command: 'set_temp_threshold', value: msg.payload});\nreturn msg;",
+        "outputs": 1,
+        "x": 370,
+        "y": 640,
+        "wires": [
+            [
+                "2df032437b46bc18"
+            ]
+        ]
+    },
+    {
+        "id": "a0869ed9330403ea",
+        "type": "ui_numeric",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Próg Gazu",
+        "label": "Próg gazu (PPM)",
+        "tooltip": "Powyżej tego progu wentylator zwiększa prędkość",
+        "group": "grp_thresholds",
+        "order": 2,
+        "width": "6",
+        "height": "1",
+        "passthru": true,
+        "topic": "gas_threshold",
+        "format": "{{value}}",
+        "min": "0",
+        "max": "10000",
+        "step": 100,
+        "x": 130,
+        "y": 700,
+        "wires": [
+            [
+                "f917fed9d9a6e3ae"
+            ]
+        ]
+    },
+    {
+        "id": "f917fed9d9a6e3ae",
+        "type": "function",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Zapisz próg gazu",
+        "func": "flow.set('gas_threshold', msg.payload);\nnode.status({fill:'blue', shape:'dot', text: msg.payload + ' PPM'});\nvar mode = flow.get('motor_mode') || 'auto';\nif (mode !== 'auto') return null;\nmsg.payload = JSON.stringify({command: 'set_gas_threshold', value: msg.payload});\nreturn msg;",
+        "outputs": 1,
+        "x": 370,
+        "y": 700,
+        "wires": [
+            [
+                "2df032437b46bc18"
+            ]
+        ]
+    },
+    {
+        "id": "2df032437b46bc18",
+        "type": "mqtt out",
+        "z": "d6bbecfbf072dc0d",
+        "name": "Komendy ESP32",
+        "topic": "/command",
+        "qos": "1",
+        "retain": false,
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_main",
+        "x": 600,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "broker_main",
+        "type": "mqtt-broker",
+        "name": "emqx",
+        "broker": "broker.emqx.io",
+        "port": "1883",
+        "clientid": "nodered_iot_v3",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": 4,
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "grp_charts",
+        "type": "ui_group",
+        "name": "Wykresy",
+        "tab": "tab_ui",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "grp_gauges",
+        "type": "ui_group",
+        "name": "Wskaźniki",
+        "tab": "tab_ui",
+        "order": 2,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "grp_control",
+        "type": "ui_group",
+        "name": "Sterowanie silnikiem",
+        "tab": "tab_ui",
+        "order": 3,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "grp_thresholds",
+        "type": "ui_group",
+        "name": "Progi alarmowe",
+        "tab": "tab_ui",
+        "order": 4,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "tab_ui",
+        "type": "ui_tab",
+        "name": "Monitor IoT",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "567555e5e13afffc",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6",
+            "node-red-node-email": "5.2.4"
+        }
+    }
+]

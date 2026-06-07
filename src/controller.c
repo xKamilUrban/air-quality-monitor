@@ -122,10 +122,10 @@ void controller_task(void *pvParameters)
             mqtt_publish_sensors(temp, ppm, motor_get_speed());
             last_publish = now;
 
-            if (ppm >= GAS_THRESHOLD_HIGH) {
+            if (ppm >= g_temp_threshold) {
                 mqtt_publish_alert("WARNING! HIGH GAS CONCENTRATION!");
             }
-            if (temp >= TEMP_THRESHOLD_HIGH) {
+            if (temp >= g_temp_threshold) {
                 mqtt_publish_alert("WARNING! HIGH TEMPERATURE!");
             }
         }

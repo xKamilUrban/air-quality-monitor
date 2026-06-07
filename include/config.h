@@ -14,7 +14,7 @@
 #define MQ2_VOLTAGE_LIMIT_MV    3000
 
 // Motor PWM
-#define MOTOR_PWM_PIN           GPIO_NUM_25
+#define MOTOR_PWM_PIN           GPIO_NUM_23
 #define MOTOR_PWM_FREQ          5000
 #define MOTOR_PWM_RESOLUTION    LEDC_TIMER_8_BIT  // 0-255
 
